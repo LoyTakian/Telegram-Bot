@@ -7,9 +7,9 @@ import time
 import telebot
 import openai
 
-API_TOKEN_TELEGRAM = "5352859156:AAFtjrwyOrj_dMD9oK_n-Zv3mSg3ZvTg0X4"
-API_TOKEN_OPENAI = "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"
-API_TOKEN_IMAGES = "https://yande.re/post.json?tags="
+API_TOKEN_TELEGRAM = os.environ['API_TOKEN_TELEGRAM']
+API_TOKEN_OPENAI = os.environ['API_TOKEN_OPENAI']
+API_TOKEN_IMAGES = os.environ['API_TOKEN_IMAGES']
 
 bot = telebot.TeleBot(API_TOKEN_TELEGRAM)
 openai.api_key = API_TOKEN_OPENAI
