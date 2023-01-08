@@ -1,0 +1,28 @@
+INFO:root:{"data_time": "2023-01-07 21:01:44", "user_info": {"id": 232859580, "username": "LoyTakian", "first_name": "Loy", "last_name": "Takian"}, "message_info": {"received": "/start", "sent": "Ol\u00e1! Eu sou a Rem.\nPau no cu da Emilia e do Subaru, agora eu sou a esposa do Loy!\nMeus atuais comandos s\u00e3o:\n  /ai 'mensagem'\n  [Para conversar com uma AI]\n  Ex: /ai quem inventou a teoria da relatividade?\n\n  /imagem 'tag'\n  [Para retornar uma imagem com as tags mencionadas]\n  Ex: /imagem rem_(re_zero) feet\n  *Utilize tags v\u00e1lidas do yande.re, separadas por um espa\u00e7o\n\n  /nhentai 'c\u00f3digo'\n  Retorna um link do nhentai contendo o c\u00f3digo enviado\n  Ex: /nhentai 192327"}}
+INFO:root:{"data_time": "2023-01-07 21:01:48", "user_info": {"id": 232859580, "username": "LoyTakian", "first_name": "Loy", "last_name": "Takian"}, "message_info": {"received": "/imagem", "sent": "https://files.yande.re/image/891f203445cf1091cf2673929505fae9/yande.re%201053362%20agent_aika%20animal_ears%20ass%20black_delmo%20blue_delmo%20breasts%20bunny_ears%20bunny_girl%20leotard%20m.i.y%20nipples%20pink_delmo%20pussy%20pussy_juice%20thighhighs%20yuri.png"}}
+ERROR:TeleBot:Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: failed to get HTTP URL content
+ERROR:TeleBot:Exception traceback:
+Traceback (most recent call last):
+  File "/home/loy/projects/Telegram-Bot/venv/lib/python3.8/site-packages/telebot/__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "/home/loy/projects/Telegram-Bot/venv/lib/python3.8/site-packages/telebot/util.py", line 156, in raise_exceptions
+    raise self.exception_info
+  File "/home/loy/projects/Telegram-Bot/venv/lib/python3.8/site-packages/telebot/util.py", line 100, in run
+    task(*args, **kwargs)
+  File "/home/loy/projects/Telegram-Bot/venv/lib/python3.8/site-packages/telebot/__init__.py", line 6395, in _run_middlewares_and_handler
+    result = handler['function'](message)
+  File "/home/loy/projects/Telegram-Bot/main.py", line 91, in send_message_image
+    bot.send_document(
+  File "/home/loy/projects/Telegram-Bot/venv/lib/python3.8/site-packages/telebot/__init__.py", line 2082, in send_document
+    apihelper.send_data(
+  File "/home/loy/projects/Telegram-Bot/venv/lib/python3.8/site-packages/telebot/apihelper.py", line 940, in send_data
+    return _make_request(token, method_url, params=payload, files=files, method='post')
+  File "/home/loy/projects/Telegram-Bot/venv/lib/python3.8/site-packages/telebot/apihelper.py", line 162, in _make_request
+    json_result = _check_result(method_name, result)
+  File "/home/loy/projects/Telegram-Bot/venv/lib/python3.8/site-packages/telebot/apihelper.py", line 189, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: failed to get HTTP URL content
+
+INFO:root:{"data_time": "2023-01-07 21:01:53", "user_info": {"id": 232859580, "username": "LoyTakian", "first_name": "Loy", "last_name": "Takian"}, "message_info": {"received": "/nhentai", "sent": "O Subaru me disse que esse c\u00f3digo n\u00e3o existe!"}}
+ERROR:TeleBot:Infinity polling: polling exited
+ERROR:TeleBot:Break infinity polling
