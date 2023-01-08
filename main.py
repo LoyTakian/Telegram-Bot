@@ -1,119 +1,122 @@
 import os
-import requests
 import json
-import random
-import time
-
-import telebot
 import openai
+import random
+import telebot
+import logging
+import datetime
+import requests
+from dotenv import load_dotenv
 
-API_TOKEN_TELEGRAM = os.environ['API_TOKEN_TELEGRAM']
-API_TOKEN_OPENAI = os.environ['API_TOKEN_OPENAI']
-API_TOKEN_IMAGES = os.environ['API_TOKEN_IMAGES']
 
-bot = telebot.TeleBot(API_TOKEN_TELEGRAM)
-openai.api_key = API_TOKEN_OPENAI
+# ===| Variables Setup |===
+load_dotenv()
+
+TOKEN_TELEGRAM = os.getenv("TOKEN_TELEGRAM")
+TOKEN_OPENAI = os.getenv("TOKEN_OPENAI")
+URL_IMAGES = os.getenv("URL_IMAGES")
+# =========================
 
 
+bot = telebot.TeleBot(TOKEN_TELEGRAM)
+openai.api_key = TOKEN_OPENAI
+
+
+# ===| Log Setup |===
+logging.basicConfig(level=logging.INFO, filename="log.txt")
+
+
+def send_to_log(message, answer):
+    user = getattr(message, "from_user", None)
+    now = datetime.datetime.now()
+
+    data = {
+        "data_time": f'{now.strftime("%Y-%m-%d %H:%M:%S")}',
+        "user_info": {
+            "id": getattr(user, "id", None),
+            "username": getattr(user, "username", None),
+            "first_name": getattr(user, "first_name", None),
+            "last_name": getattr(user, "last_name", None),
+        },
+        "message_info": {"received": getattr(message, "text", None), "sent": answer},
+    }
+
+    data_json = json.dumps(data)
+    logging.info(data_json)
+
+
+# ====================
+
+# ===| Functions Setup |===
 @bot.message_handler(commands=["help", "start"])
-def send_welcome(message):
-    sender_username = message.from_user.username
-    print(
-        "===================================================\n",
-        "====| send_message_ai |====\n",
-        f"==| Message Sender: {sender_username} |==\n",
-        f"==| Message content: {message.text} |==\n",
-        f"==| Message answer: [PADRÃO] |==",
-    )
-    bot.reply_to(
-        message,
-        """Olá! Eu sou a Rem. \n
-Pau no cu da Emilia e do Subaru, agora eu sou a esposa do Loy.\n
-Meus atuais comandos são:\n
-    /ai 'mensagem'
-    [Para conversar com uma AI]
-    Ex: /ai quem inventou a teoria da relatividade?
+def send_message_welcome(message):
 
-    /imagem 'tag'
-    [Para retornar uma imagem com as tags mencionadas]
-    ***utilize tags válidas do yande.re separadas por um espaço**
-    Ex: /imagem rem_(re_zero) feet
-    """,
-    )
+    answer = "Olá! Eu sou a Rem.\nPau no cu da Emilia e do Subaru, agora eu sou a esposa do Loy!\nMeus atuais comandos são:\n  /ai 'mensagem'\n  [Para conversar com uma AI]\n  Ex: /ai quem inventou a teoria da relatividade?\n\n  /imagem 'tag'\n  [Para retornar uma imagem com as tags mencionadas]\n  Ex: /imagem rem_(re_zero) feet\n  *Utilize tags válidas do yande.re, separadas por um espaço\n\n  /nhentai 'código'\n  Retorna um link do nhentai contendo o código enviado\n  Ex: /nhentai 192327"
+    send_to_log(message, answer)
+    bot.reply_to(message, answer)
 
 
 @bot.message_handler(commands=["ai"])
 def send_message_ai(message):
-    sender_username = message.from_user.username
     question = message.text[4:]
-    response = openai.Completion.create(
+    answer = openai.Completion.create(
         engine="text-davinci-002", prompt=question, max_tokens=1024
-    )
-    answer = response["choices"][0]["text"]
+    )["choices"][0]["text"]
 
-    print(
-        "===================================================\n",
-        "====| send_message_ai |====\n",
-        f"==| Message Sender: {sender_username} |==\n",
-        f"==| Message content: {message.text} |==\n",
-        f"==| Message answer: {answer} |==",
-    )
+    send_to_log(message, answer)
     bot.reply_to(message, answer)
 
 
 @bot.message_handler(commands=["imagem"])
-def send_message_imagem(message):
-    sender_username = message.from_user.username
+def send_message_image(message):
     tag_list = "+".join(message.text[8:].split(" "))
-    response = requests.get(f"{API_TOKEN_IMAGES}{tag_list}")
+    response = requests.get(f"{URL_IMAGES}{tag_list}")
 
-    print(
-        "===================================================\n",
-        "====| send_message_imagem |====\n",
-        f"==| Message Sender: {sender_username} |==\n",
-        f"==| Message Content: {message.text} |==",
-    )
-    if response.status_code == 200:
-        if len(response.content) != None:
-            image_list = json.loads(response.content)
-            if image_list:
-                random_image = random.choice(image_list)
-                random_image = random_image.get("file_url")
-
-                print(f"==| Message Answer: {random_image} |==")
-                bot.reply_to(message, f"{random_image}")
-
-            else:
-                print(f"==| Message Answer: {response.content} |==")
-                bot.reply_to(
-                    message,
-                    "Não encontrei nenhuma imagem com as tags que você escolheu.",
-                )
-    else:
-        print(
-            "==| SOMETHING WENT WRONG |==\n",
-            response.__dict__,
-            "\n==============================",
-        )
-        bot.reply_to(message, "O culto da bruxa me impediu de conseguir uma imagem :c")
-
-
-@bot.message_handler(func=lambda message: True)
-def send_message(message):
-    sender_username = message.from_user.username
-    print(
-        "===================================================\n",
-        "====| send_message |====\n",
-        f"==| Message Sender: {sender_username} |==\n",
-        f"==| Message content: {message.text} |==\n",
-        f"==| Message answer: {message.text} |==",
-    )
-    if message.text.lower() == "loyola":
-        bot.reply_to(message, "Loyola vose")
+    if response.status_code != 200:
+        send_to_log(message, f"{response}")
+        bot.reply_to(message, f"{response}")
+        return
 
     else:
 
-        bot.reply_to(message, message.text)
+        data = json.loads(response.content)
+        if not data:
+            answer = "O culto da bruxa me impediu de conseguir uma imagem :c"
+            send_to_log(message, answer)
+            bot.reply_to(message, answer)
+        else:
+
+            answer = random.choice(data).get("file_url")
+            send_to_log(message, answer)
+            bot.send_document(
+                chat_id=message.chat.id,
+                document=answer,
+                reply_to_message_id=message.message_id,
+            )
 
 
+@bot.message_handler(commands=["nhentai"])
+def send_message_nhentai(message):
+    magical_numbers = message.text[9:]
+
+    if magical_numbers.isdigit():
+        answer = f"https://nhentai.net/g/{magical_numbers}/"
+    else:
+        answer = "O Subaru me disse que esse código não existe!"
+
+    send_to_log(message, answer)
+    bot.reply_to(message, answer)
+
+
+@bot.message_handler(commands=["teste"])
+def send_test(message):
+    bot.reply_to(message, "Estou no meu momento íntimo com o Loy, cai fora.")
+
+
+# ===========================
+
+
+# ===| Run Bot |===
+print("Bom dia, Loy!")
 bot.infinity_polling()
+# =================
