@@ -38,7 +38,6 @@ pip install -r requirements.txt
 
 ## Usage
 
-- Have created a .env file based on the .env.example and configured your tokens from Telegram and Openai
 - Run the start.sh file by double-clicking it or using bash `sh start.sh`
 - If it doesn't work, use python in a terminal window `python main.py`
 ### Pre requisites
