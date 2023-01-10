@@ -42,6 +42,7 @@ def send_to_log(message, answer):
     }
 
     data_json = json.dumps(data)
+    print("New entry: ", data_json)
     logging.info(data_json)
 
 
