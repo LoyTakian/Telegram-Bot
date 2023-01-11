@@ -1,12 +1,11 @@
 import os
-import pytz
 import json
 import openai
 import random
 import telebot
 import logging
+import datetime
 import requests
-from datetime import datetime
 from dotenv import load_dotenv
 
 
@@ -16,8 +15,6 @@ load_dotenv()
 TOKEN_TELEGRAM = os.getenv("TOKEN_TELEGRAM")
 TOKEN_OPENAI = os.getenv("TOKEN_OPENAI")
 URL_IMAGES = os.getenv("URL_IMAGES")
-
-
 # =========================
 
 
@@ -30,13 +27,11 @@ logging.basicConfig(level=logging.INFO, filename="log.txt")
 
 
 def send_to_log(message, answer):
-    tz = pytz.timezone("America/Sao_Paulo")
-    brazil_time_now = datetime.now(tz)
-
     user = getattr(message, "from_user", None)
+    now = datetime.datetime.now()
 
     data = {
-        "data_time": f'{brazil_time_now.strftime("%d-%m-%Y %H:%M:%S")}',
+        "data_time": f'{now.strftime("%Y-%m-%d %H:%M:%S")}',
         "user_info": {
             "id": getattr(user, "id", None),
             "username": getattr(user, "username", None),
@@ -125,6 +120,4 @@ def send_test(message):
 # ===| Run Bot |===
 print("Bom dia, Loy!")
 bot.infinity_polling()
-
-
 # =================
