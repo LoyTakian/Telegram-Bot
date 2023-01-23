@@ -65,9 +65,13 @@ def send_message_welcome(message):
 @bot.message_handler(commands=["ai"])
 def send_message_ai(message):
     question = message.text[4:]
-    answer = openai.Completion.create(
-        engine="text-davinci-002", prompt=question, max_tokens=1024
-    )["choices"][0]["text"]
+
+    if len(question) > 0:
+        answer = openai.Completion.create(
+            engine="text-davinci-002", prompt=question, max_tokens=1024
+        )["choices"][0]["text"]
+    else:
+        answer = "Você precisa digitar algo após o '/ai'"
 
     send_to_log(message, answer)
     bot.reply_to(message, answer)
