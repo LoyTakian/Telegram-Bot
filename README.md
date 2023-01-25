@@ -12,6 +12,8 @@ For example: /imagem rem_(re_zero) feet\
 
 - `/nhentai {code}` Using this command you can get a formatted link of a gallery from [nhentai](https://nhentai.net).\
 For example: /nhentai 192327
+
+- `/fumo` Using this command you can request an image of a random fumo doll.
 ## Installation
 
 ***Make sure to have [pip](https://pip.pypa.io/en/stable/) and [venv](https://docs.python.org/3/library/venv.html) working**.

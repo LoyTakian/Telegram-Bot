@@ -58,7 +58,7 @@ def send_to_log(message, answer):
 @bot.message_handler(commands=["help", "start"])
 def send_message_welcome(message):
 
-    answer = "Olá! Eu sou a Rem.\nPau no cu da Emilia e do Subaru, agora eu sou a esposa do Loy!\nMeus atuais comandos são:\n  /ai 'mensagem'\n  [Para conversar com uma AI]\n  Ex: /ai quem inventou a teoria da relatividade?\n\n  /imagem 'tag'\n  [Para retornar uma imagem com as tags mencionadas]\n  Ex: /imagem rem_(re_zero) feet\n  *Utilize tags válidas do yande.re, separadas por um espaço\n\n  /nhentai 'código'\n  Retorna um link do nhentai contendo o código enviado\n  Ex: /nhentai 192327"
+    answer = "Olá! Eu sou a Rem.\nPau no cu da Emilia e do Subaru, agora eu sou a esposa do Loy!\nMeus atuais comandos são:\n  /ai 'mensagem'\n  [Para conversar com uma AI]\n  Ex: /ai quem inventou a teoria da relatividade?\n\n  /imagem 'tag'\n  [Para retornar uma imagem com as tags mencionadas]\n  Ex: /imagem rem_(re_zero) feet\n  *Utilize tags válidas do yande.re, separadas por um espaço\n\n  /nhentai 'código'\n  Retorna um link do nhentai contendo o código enviado\n  Ex: /nhentai 192327\n\n /fumo\n Te retorna a imagem de uma boneca fumo!\n Ex: /fumo"
     send_to_log(message, answer)
     bot.reply_to(message, answer)
 
