@@ -16,6 +16,7 @@ load_dotenv()
 TOKEN_TELEGRAM = os.getenv("TOKEN_TELEGRAM")
 TOKEN_OPENAI = os.getenv("TOKEN_OPENAI")
 URL_IMAGES = os.getenv("URL_IMAGES")
+URL_FUMOS = os.getenv("URL_FUMOS")
 
 
 # =========================
@@ -116,6 +117,34 @@ def send_message_nhentai(message):
 
     send_to_log(message, answer)
     bot.reply_to(message, answer)
+
+
+@bot.message_handler(commands=["fumo"])
+def send_fumo(message):
+    response = requests.get(f"{URL_FUMOS}/random")
+
+    if response.status_code != 200:
+        send_to_log(message, f"{response}")
+        bot.reply_to(
+            message, "A url foi destruída por uma das Grandes Bestas da bruxa!"
+        )
+        return
+
+    else:
+
+        data = json.loads(response.content)
+        if not data:
+            answer = "O culto da bruxa me impediu de conseguir uma imagem :c"
+            send_to_log(message, answer)
+            bot.reply_to(message, answer)
+        else:
+            answer = data.get("URL")
+            send_to_log(message, answer)
+            bot.send_document(
+                chat_id=message.chat.id,
+                document=answer,
+                reply_to_message_id=message.message_id,
+            )
 
 
 @bot.message_handler(commands=["teste"])
