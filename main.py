@@ -175,7 +175,7 @@ def send_message_imagem(message):
             send_to_log(message, answer)
             bot.send_photo(
                 chat_id=message.chat.id,
-                document=answer,
+                photo=answer,
                 reply_to_message_id=message.message_id,
             )
 
