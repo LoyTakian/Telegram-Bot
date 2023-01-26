@@ -152,6 +152,34 @@ def send_test(message):
     bot.reply_to(message, "Estou no meu momento íntimo com o Loy, cai fora.")
 
 
+@bot.message_handler(commands=["image"])
+def send_message_imagem(message):
+    tag_list = "+".join(message.text[7:].split(" "))
+    response = requests.get(f"{URL_IMAGES}{tag_list}")
+
+    if response.status_code != 200:
+        send_to_log(message, f"{response}")
+        bot.reply_to(message, f"{response}")
+        return
+
+    else:
+
+        data = json.loads(response.content)
+        if not data:
+            answer = "O culto da bruxa me impediu de conseguir uma imagem :c"
+            send_to_log(message, answer)
+            bot.reply_to(message, answer)
+        else:
+
+            answer = random.choice(data).get("file_url")
+            send_to_log(message, answer)
+            bot.send_photo(
+                chat_id=message.chat.id,
+                document=answer,
+                reply_to_message_id=message.message_id,
+            )
+
+
 # ===========================
 
 
