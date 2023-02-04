@@ -1,11 +1,13 @@
 import os
 import pytz
+import time
 import json
 import openai
 import random
 import telebot
 import logging
 import requests
+import urllib.request
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -143,6 +145,37 @@ def send_fumo(message):
             bot.send_photo(
                 chat_id=message.chat.id,
                 photo=answer,
+                reply_to_message_id=message.message_id,
+            )
+
+
+@bot.message_handler(commands=["imagem_"])
+def send_message_image(message):
+    tag_list = "+".join(message.text[8:].split(" "))
+    response = requests.get(f"{URL_IMAGES}{tag_list}")
+
+    if response.status_code != 200:
+        send_to_log(message, f"{response}")
+        bot.reply_to(message, f"{response}")
+        return
+
+    else:
+
+        data = json.loads(response.content)
+        if not data:
+            answer = "O culto da bruxa me impediu de conseguir uma imagem :c"
+            send_to_log(message, answer)
+            bot.reply_to(message, answer)
+        else:
+
+            answer = random.choice(data).get("file_url")
+            send_to_log(message, answer)
+
+            urllib.request.urlretrieve(answer, "image.png")
+            time.sleep(3)
+            bot.send_photo(
+                chat_id=message.chat.id,
+                photo="./image.png",
                 reply_to_message_id=message.message_id,
             )
 
