@@ -1,6 +1,7 @@
 # Telegram Bot
 
 This is a simple Telegram Bot made for learning purposes. It main focus are the weebs from Telegram, as it's main features were made based on them.
+You can contact her through here: https://t.me/Rem_u_bot
 
 ## Features
 - `/ai {message}` Using this command you can chat with chatGPT.\

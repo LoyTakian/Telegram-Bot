@@ -70,9 +70,12 @@ def send_message_ai(message):
     question = message.text[4:]
 
     if len(question) > 0:
-        answer = openai.Completion.create(
-            engine="text-davinci-002", prompt=question, max_tokens=1024
-        )["choices"][0]["text"]
+        try:
+            answer = openai.Completion.create(
+                engine="text-davinci-002", prompt=question, max_tokens=1024
+            )["choices"][0]["text"]
+        except:
+            answer = "Minha cota do chatGPT acabou. O comando está temporariamente desabilitado."
     else:
         answer = "Você precisa digitar algo após o '/ai'"
 
