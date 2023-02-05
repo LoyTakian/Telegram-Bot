@@ -98,14 +98,16 @@ def send_message_image(message):
             send_to_log(message, answer)
             bot.reply_to(message, answer)
         else:
-
-            answer = random.choice(data).get("file_url")
-            send_to_log(message, answer)
-            bot.send_photo(
-                chat_id=message.chat.id,
-                photo=answer,
-                reply_to_message_id=message.message_id,
-            )
+            try:
+                answer = random.choice(data).get("file_url")
+                send_to_log(message, answer)
+                bot.send_photo(
+                    chat_id=message.chat.id,
+                    photo=answer,
+                    reply_to_message_id=message.message_id,
+                )
+            except:
+                send_message_image(message)
 
 
 @bot.message_handler(commands=["nhentai"])
@@ -145,37 +147,6 @@ def send_fumo(message):
             bot.send_photo(
                 chat_id=message.chat.id,
                 photo=answer,
-                reply_to_message_id=message.message_id,
-            )
-
-
-@bot.message_handler(commands=["imagem_"])
-def send_message_image(message):
-    tag_list = "+".join(message.text[8:].split(" "))
-    response = requests.get(f"{URL_IMAGES}{tag_list}")
-
-    if response.status_code != 200:
-        send_to_log(message, f"{response}")
-        bot.reply_to(message, f"{response}")
-        return
-
-    else:
-
-        data = json.loads(response.content)
-        if not data:
-            answer = "O culto da bruxa me impediu de conseguir uma imagem :c"
-            send_to_log(message, answer)
-            bot.reply_to(message, answer)
-        else:
-
-            answer = random.choice(data).get("file_url")
-            send_to_log(message, answer)
-
-            urllib.request.urlretrieve(answer, "image.png")
-            time.sleep(3)
-            bot.send_photo(
-                chat_id=message.chat.id,
-                photo="attach://image.png",
                 reply_to_message_id=message.message_id,
             )
 
