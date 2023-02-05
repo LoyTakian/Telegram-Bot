@@ -85,6 +85,7 @@ tries = 0
 
 @bot.message_handler(commands=["imagem"])
 def send_message_image(message):
+    global tries
     tag_list = "+".join(message.text[8:].split(" "))
     response = requests.get(f"{URL_IMAGES}{tag_list}")
 
@@ -109,12 +110,8 @@ def send_message_image(message):
                     photo=answer,
                     reply_to_message_id=message.message_id,
                 )
-                global tries
                 tries = 0
             except:
-                global tries
-
-                tries = tries
                 if tries >= 5:
                     answer = (
                         f"Tentei conseguir uma imagem {tries} vezes mas não consegui."
