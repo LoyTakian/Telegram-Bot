@@ -114,6 +114,7 @@ def send_message_image(message):
             except:
                 global tries
 
+                tries = tries
                 if tries >= 5:
                     answer = (
                         f"Tentei conseguir uma imagem {tries} vezes mas não consegui."
