@@ -175,7 +175,7 @@ def send_message_image(message):
             time.sleep(3)
             bot.send_photo(
                 chat_id=message.chat.id,
-                photo="./image.png",
+                photo="attach://image.png",
                 reply_to_message_id=message.message_id,
             )
 

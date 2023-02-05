@@ -1,5 +1,5 @@
 import urllib.request
 
-img_url = "https://files.yande.re/sample/4e6195d57274a7d8d89b9bd0984af5b5/yande.re%20906667%20sample%20animal_ears%20ayamy%20garter%20nekomimi%20re_zero_kara_hajimeru_isekai_seikatsu%20rem_%28re_zero%29%20sweater%20tail.jpg"
+img_url = "https://files.yande.re/sample/b864bc0702364eae6ef970ea7dbe8e4d/yande.re%201061771%20sample%20amiya_%28arknights%29%20animal_ears%20arknights%20bunny_ears%20suyama_kara.jpg"
 
-urllib.request.urlretrieve(img_url, "teste.png")
+urllib.request.urlretrieve(img_url, "./images/teste.png")
