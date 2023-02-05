@@ -118,9 +118,11 @@ def send_message_image(message):
                     answer = (
                         f"Tentei conseguir uma imagem {tries} vezes mas não consegui."
                     )
-
-                tries = tries + 1
-                send_message_image(message)
+                    send_to_log(message, answer)
+                    bot.reply_to(message, answer)
+                else:
+                    tries = tries + 1
+                    send_message_image(message)
 
 
 @bot.message_handler(commands=["nhentai"])
