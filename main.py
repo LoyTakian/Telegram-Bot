@@ -107,23 +107,22 @@ def send_message_image(message):
         else:
             try:
                 answer = random.choice(data).get("file_url")
-                send_to_log(message, answer)
-                bot.send_photo(
-                    chat_id=message.chat.id,
-                    photo=answer,
-                    reply_to_message_id=message.message_id,
-                )
                 tries = 0
             except:
                 if tries >= 5:
                     answer = (
                         f"Tentei conseguir uma imagem {tries} vezes mas não consegui."
                     )
-                    send_to_log(message, answer)
-                    bot.reply_to(message, answer)
                 else:
                     tries = tries + 1
                     send_message_image(message)
+
+        send_to_log(message, answer)
+        bot.send_photo(
+            chat_id=message.chat.id,
+            photo=answer,
+            reply_to_message_id=message.message_id,
+        )
 
 
 @bot.message_handler(commands=["nhentai"])
@@ -161,23 +160,21 @@ def send_fumo(message):
         else:
             try:
                 answer = data.get("URL")
-                send_to_log(message, answer)
-                bot.send_photo(
-                    chat_id=message.chat.id,
-                    photo=answer,
-                    reply_to_message_id=message.message_id,
-                )
                 tries = 0
             except:
                 if tries >= 5:
                     answer = (
                         f"Tentei conseguir uma imagem {tries} vezes mas não consegui."
                     )
-                    send_to_log(message, answer)
-                    bot.reply_to(message, answer)
                 else:
                     tries = tries + 1
                     send_fumo(message)
+        send_to_log(message, answer)
+        bot.send_photo(
+            chat_id=message.chat.id,
+            photo=answer,
+            reply_to_message_id=message.message_id,
+        )
 
 
 @bot.message_handler(commands=["teste"])
