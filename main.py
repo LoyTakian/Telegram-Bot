@@ -151,7 +151,7 @@ def send_fumo(message):
 
     else:
         if response.headers.get("Content-Type") != "application/json; charset=utf-8":
-            response = response.dump({"content": ""})
+            response = json.dumps({"content": ""})
         data = json.loads(response.content)
         if not data:
             answer = "O culto da bruxa me impediu de conseguir uma imagem :c"
