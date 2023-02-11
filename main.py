@@ -60,7 +60,7 @@ def send_to_log(message, answer):
 @bot.message_handler(commands=["help", "start"])
 def send_message_welcome(message):
 
-    answer = "Olá! Eu sou a Rem.\nPau no cu da Emilia e do Subaru, agora eu sou a esposa do Loy!\nMeus atuais comandos são:\n  /ai 'mensagem'\n  [Para conversar com uma AI]\n  Ex: /ai quem inventou a teoria da relatividade?\n\n  /imagem 'tag'\n  [Para retornar uma imagem com as tags mencionadas]\n  Ex: /imagem rem_(re_zero) feet\n  *Utilize tags válidas do yande.re, separadas por um espaço\n\n  /nhentai 'código'\n  Retorna um link do nhentai contendo o código enviado\n  Ex: /nhentai 192327\n\n /fumo\n Te retorna a imagem de uma boneca fumo!\n Ex: /fumo"
+    answer = "Olá! Eu sou a Rem.\nPau no cu da Emilia e do Subaru, agora eu sou a esposa do Loy!\nMeus atuais comandos são:\n  /ai 'mensagem'\n  [Para conversar com uma AI]\n  Ex: /ai quem inventou a teoria da relatividade?\n\n  /imagem 'tag'\n  [Para retornar uma imagem com as tags mencionadas]\n  Ex: /imagem rem_(re_zero) feet\n  *Utilize tags válidas do yande.re, separadas por um espaço\n\n  /nhentai 'código'\n  [Para retornar um link do nhentai contendo o código enviado]\n  Ex: /nhentai 192327\n\n /fumo\n [Para retornar a imagem de uma boneca fumo aleatória!]\n Ex: /fumo"
     send_to_log(message, answer)
     bot.reply_to(message, answer)
 
@@ -141,6 +141,7 @@ def send_message_nhentai(message):
 
 @bot.message_handler(commands=["fumo"])
 def send_fumo(message):
+    global tries
     response = requests.get(f"{URL_FUMOS}/random")
 
     if response.status_code != 200:
@@ -158,13 +159,25 @@ def send_fumo(message):
             send_to_log(message, answer)
             bot.reply_to(message, answer)
         else:
-            answer = data.get("URL")
-            send_to_log(message, answer)
-            bot.send_photo(
-                chat_id=message.chat.id,
-                photo=answer,
-                reply_to_message_id=message.message_id,
-            )
+            try:
+                answer = data.get("URL")
+                send_to_log(message, answer)
+                bot.send_photo(
+                    chat_id=message.chat.id,
+                    photo=answer,
+                    reply_to_message_id=message.message_id,
+                )
+                tries = 0
+            except:
+                if tries >= 5:
+                    answer = (
+                        f"Tentei conseguir uma imagem {tries} vezes mas não consegui."
+                    )
+                    send_to_log(message, answer)
+                    bot.reply_to(message, answer)
+                else:
+                    tries = tries + 1
+                    send_fumo(message)
 
 
 @bot.message_handler(commands=["teste"])
