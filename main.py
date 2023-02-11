@@ -98,7 +98,6 @@ def send_message_image(message):
         return
 
     else:
-
         data = json.loads(response.content)
         if not data:
             answer = "O culto da bruxa me impediu de conseguir uma imagem :c"
@@ -151,7 +150,8 @@ def send_fumo(message):
         return
 
     else:
-
+        if response.headers.get("Content-Type") != "application/json; charset=utf-8":
+            response = response.dump({"content": ""})
         data = json.loads(response.content)
         if not data:
             answer = "O culto da bruxa me impediu de conseguir uma imagem :c"
