@@ -1,13 +1,11 @@
 import os
 import pytz
-import time
 import json
 import openai
 import random
 import telebot
 import logging
 import requests
-import urllib.request
 from datetime import datetime
 from dotenv import load_dotenv
 
