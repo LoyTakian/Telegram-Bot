@@ -47,5 +47,3 @@ pip install -r requirements.txt
 - Have created a bot in [Telegram](https://t.me/botfather).
 - Have created an account in [OPENAI](https://beta.openai.com)
 - Have created a .env file based on the .env.example and configured your tokens from Telegram and Openai
-
-:)
